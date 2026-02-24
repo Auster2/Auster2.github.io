@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人作品集 | Portfolio</title>
+    <meta name="description" content="个人创意作品展示平台">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --bg: #0c0c14;
+            --card: #16161f;
+            --border: #27273a;
+            --accent: #4f46e5;
+            --text: #f1f1f1;
+            --subtext: #9ca3af;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 60px;
+            line-height: 1.6;
+        }
+
+        /* 顶部个人信息 */
+        .profile {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 60px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .contact {
+            font-size: 16px;
+            color: var(--subtext);
+            margin-top: 6px;
+        }
+
+        .edit {
+            margin-top: 16px;
+            padding: 8px 18px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .edit:hover {
+            background: #4338ca;
+        }
+
+        /* 上传区域 */
+        .upload-box {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 36px 20px;
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: var(--accent);
+        }
+
+        .upload-box p {
+            color: var(--subtext);
+            font-size: 15px;
+        }
+
+        /* 作品展示 */
+        .portfolio {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 20px;
+        }
+
+        .item {
+            background: var(--card);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .item:hover {
+            transform: translateY(-4px);
+        }
+
+        .item img,
+        .item video {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item video {
+            background: #000;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 0;
+            color: var(--subtext);
+        }
+
+        /* 弹窗 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            background: var(--card);
+            padding: 32px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px 14px;
+            margin: 8px 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            outline: none;
+            font-size: 15px;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            margin-top: 16px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        /* 隐藏上传按钮 */
+        #avatarInput, #fileInput {
+            display: none;
+        }
+
+        /* 顶部提示 */
+        .tip {
+            text-align: center;
+            color: var(--subtext);
+            font-size: 13px;
+            margin: -20px 0 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 个人资料 -->
+    <div class="profile">
+        <img id="avatar" class="avatar" src="https://picsum.photos/200/200?1" alt="头像">
+        <input type="file" id="avatarInput" accept="image/*">
+        <div id="name" class="name">我的作品集</div>
+        <div id="contact" class="contact">点击编辑添加联系方式</div>
+        <button class="edit" onclick="openModal()">编辑个人资料</button>
+    </div>
+
+    <!-- 上传 -->
+    <div class="upload-box" id="uploadBtn">
+        <p>点击或拖拽上传图片 / 视频（支持多文件）</p>
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple>
+    </div>
+    <p class="tip">数据保存在本地，部署后永久展示，更换设备需重新上传</p>
+
+    <!-- 作品 -->
+    <div class="portfolio" id="gallery">
+        <div class="empty">暂无作品，点击上方开始上传</div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3>编辑个人资料</h3>
+            <input type="text" id="editName" placeholder="昵称/姓名">
+            <input type="text" id="editContact" placeholder="微信 / 电话 / 邮箱 / 地址">
+            <button onclick="saveProfile()">保存</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================================
+        // 本地存储工具（部署后永久保存）
+        // ==============================================
+        const storage = {
+            save(key, data) {
+                localStorage.setItem(key, JSON.stringify(data));
+            },
+            get(key) {
+                const d = localStorage.getItem(key);
+                return d ? JSON.parse(d) : null;
+            }
+        };
+
+        // ==============================================
+        // 头像
+        // ==============================================
+        const avatar = document.getElementById('avatar');
+        const avatarInput = document.getElementById('avatarInput');
+        const savedAvatar = storage.get('avatar');
+        if (savedAvatar) avatar.src = savedAvatar;
+
+        avatar.addEventListener('click', () => avatarInput.click());
+        avatarInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const url = URL.createObjectURL(file);
+            avatar.src = url;
+            storage.save('avatar', url);
+        });
+
+        // ==============================================
+        // 个人资料
+        // ==============================================
+        const modal = document.getElementById('modal');
+        const nameEl = document.getElementById('name');
+        const contactEl = document.getElementById('contact');
+
+        const profile = storage.get('profile') || { name: '我的作品集', contact: '点击编辑添加联系方式' };
+        nameEl.innerText = profile.name;
+        contactEl.innerText = profile.contact;
+
+        function openModal() {
+            modal.style.display = 'flex';
+            document.getElementById('editName').value = profile.name;
+            document.getElementById('editContact').value = profile.contact;
+        }
+
+        function saveProfile() {
+            profile.name = document.getElementById('editName').value || '我的作品集';
+            profile.contact = document.getElementById('editContact').value || '点击编辑添加联系方式';
+            nameEl.innerText = profile.name;
+            contactEl.innerText = profile.contact;
+            storage.save('profile', profile);
+            modal.style.display = 'none';
+        }
+
+        // ==============================================
+        // 作品上传 + 本地保存
+        // ==============================================
+        const gallery = document.getElementById('gallery');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        let works = storage.get('works') || [];
+
+        // 加载已保存作品
+        function renderWorks() {
+            document.querySelector('.empty')?.remove();
+            works.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'item';
+                if (item.type.startsWith('image/')) {
+                    el.innerHTML = `<img src="${item.url}" alt="作品">`;
+                } else {
+                    el.innerHTML = `<video src="${item.url}" controls muted></video>`;
+                }
+                gallery.appendChild(el);
+            });
+        }
+
+        if (works.length > 0) renderWorks();
+
+        // 上传新作品
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', e => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            document.querySelector('.empty')?.remove();
+
+            files.forEach(file => {
+                const url = URL.createObjectURL(file);
+                works.push({ url, type: file.type });
+                const el = document.createElement('div');
+                el.className = 'item';
+                if (file.type.startsWith('image/')) {
+                    el.innerHTML = `<img src="${url}" alt="作品">`;
+                } else {
+                    el.innerHTML = `<video src="${url}" controls muted></video>`;
+                }
+                gallery.appendChild(el);
+            });
+
+            storage.save('works', works);
+        });
+    </script>
+</body>
+</html>
