@@ -17,7 +17,7 @@ const CATEGORIES = {
 };
 
 // 如果你想用 GitHub 自動掃描，請保留下面這段並填入正確資訊
-const USE_GITHUB_AUTO = false;
+const USE_GITHUB_AUTO = true;
 const GITHUB_USER = "Auster2";
 const GITHUB_REPO = "Auster2.github.io";
 
