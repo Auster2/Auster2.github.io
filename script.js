@@ -18,8 +18,8 @@ const CATEGORIES = {
 
 // 如果你想用 GitHub 自動掃描，請保留下面這段並填入正確資訊
 const USE_GITHUB_AUTO = false;
-const GITHUB_USER = "你的github用戶名";
-const GITHUB_REPO = "你的github倉庫名";
+const GITHUB_USER = "Auster2";
+const GITHUB_REPO = "auster2.github.io";
 
 // ────────────────────────────────────────────────────────────────────────
 
