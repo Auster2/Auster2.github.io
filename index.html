@@ -1,367 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Photography Portfolio</title>
+  <title>張旭作品集</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0c0c0b;
-      --surface: #141413;
-      --text: #e8e4dd;
-      --muted: #6b665e;
-      --accent: #c9a96e;
-      --border: #2a2924;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      min-height: 100vh;
-      cursor: none;
-    }
-
-    /* Custom cursor */
-    .cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-      mix-blend-mode: difference;
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(201,169,110,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.12s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    }
-    body.hovering .cursor { width: 14px; height: 14px; }
-    body.hovering .cursor-ring { width: 52px; height: 52px; opacity: 0.6; }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 28px 48px;
-      background: linear-gradient(to bottom, rgba(12,12,11,0.95) 0%, transparent 100%);
-    }
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: 1.4rem;
-      letter-spacing: 0.2em;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .logo span { color: var(--accent); }
-    nav { display: flex; gap: 36px; }
-    nav a {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    nav a:hover { color: var(--accent); }
-
-    /* Hero */
-    .hero {
-      height: 100vh;
-      display: flex;
-      align-items: flex-end;
-      padding: 0 48px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 70% 40%, rgba(201,169,110,0.04) 0%, transparent 60%);
-    }
-    .hero-line {
-      position: absolute;
-      top: 50%; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--border), transparent);
-      transform: translateY(-50%);
-    }
-    .hero-content { position: relative; z-index: 2; }
-    .hero-eyebrow {
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 1s 0.3s forwards;
-    }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(3.5rem, 8vw, 8rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      opacity: 0;
-      animation: fadeUp 1s 0.5s forwards;
-    }
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-    }
-    .hero-sub {
-      margin-top: 24px;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadeUp 1s 0.8s forwards;
-    }
-    .scroll-hint {
-      position: absolute;
-      right: 48px;
-      bottom: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      opacity: 0;
-      animation: fadeIn 1s 1.2s forwards;
-    }
-    .scroll-hint span {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      writing-mode: vertical-lr;
-    }
-    .scroll-line {
-      width: 1px; height: 60px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      animation: scrollDown 2s 1.5s infinite;
-    }
-
-    /* Gallery */
-    .gallery-section {
-      padding: 80px 48px 120px;
-    }
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 24px;
-      margin-bottom: 60px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: 1.8rem;
-      letter-spacing: 0.1em;
-    }
-    .section-count {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-    }
-
-    /* Masonry grid */
-    .masonry {
-      columns: 3;
-      column-gap: 16px;
-    }
-    @media (max-width: 900px) { .masonry { columns: 2; } }
-    @media (max-width: 560px) { .masonry { columns: 1; } }
-
-    .photo-item {
-      break-inside: avoid;
-      margin-bottom: 16px;
-      position: relative;
-      overflow: hidden;
-      background: var(--surface);
-      cursor: none;
-    }
-    .photo-item img {
-      display: block;
-      width: 100%;
-      height: auto;
-      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
-      filter: brightness(0.92) contrast(1.05);
-    }
-    .photo-item:hover img {
-      transform: scale(1.04);
-      filter: brightness(1) contrast(1.08);
-    }
-    .photo-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(12,12,11,0.7) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 20px;
-    }
-    .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text);
-      letter-spacing: 0.05em;
-    }
-
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(12,12,11,0.97);
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .lightbox.active { display: flex; }
-    .lightbox-img-wrap {
-      max-width: 90vw;
-      max-height: 80vh;
-      position: relative;
-    }
-    .lightbox-img-wrap img {
-      max-width: 90vw;
-      max-height: 80vh;
-      object-fit: contain;
-      display: block;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.8);
-    }
-    .lightbox-caption {
-      margin-top: 20px;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-align: center;
-    }
-    .lightbox-close {
-      position: absolute;
-      top: 28px; right: 48px;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      cursor: none;
-      transition: color 0.3s;
-      background: none;
-      border: none;
-    }
-    .lightbox-close:hover { color: var(--accent); }
-    .lightbox-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      padding: 12px 18px;
-      cursor: none;
-      transition: border-color 0.3s, color 0.3s;
-    }
-    .lightbox-nav:hover { border-color: var(--accent); color: var(--accent); }
-    .lightbox-prev { left: 24px; }
-    .lightbox-next { right: 24px; }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 80px 20px;
-      color: var(--muted);
-    }
-    .empty-state h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-style: italic;
-      font-size: 2rem;
-      margin-bottom: 16px;
-      color: var(--text);
-    }
-    .empty-state p {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      line-height: 2;
-    }
-    .empty-state code {
-      display: inline-block;
-      margin-top: 20px;
-      font-family: monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      background: var(--surface);
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    footer p { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
-
-    /* Animations */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes scrollDown {
-      0%   { transform: scaleY(0); transform-origin: top; }
-      50%  { transform: scaleY(1); transform-origin: top; }
-      51%  { transform: scaleY(1); transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -370,212 +16,74 @@
 
   <!-- Header -->
   <header>
-    <a href="#" class="logo">PORT<span>·</span>FOLIO</a>
+    <a href="#" class="logo">ZHANG XU</a>
     <nav>
-      <a href="#gallery">Gallery</a>
-      <a href="#about">About</a>
+      <a href="#product-video">產品視頻</a>
+      <a href="#product-image">產品圖片</a>
+      <a href="#portrait">人像攝影</a>
     </nav>
   </header>
 
   <!-- Hero -->
-  <section class="hero" id="home">
+  <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-line"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Visual Stories</p>
-      <h1 class="hero-title">Light &amp;<br><em>Shadow</em></h1>
-      <p class="hero-sub">Photography Portfolio</p>
+      <p class="hero-eyebrow">影像創作</p>
+      <h1 class="hero-title">張旭<br><em>作品集</em></h1>
+      <p class="hero-sub">Product · Portrait · Video</p>
     </div>
     <div class="scroll-hint">
       <div class="scroll-line"></div>
-      <span>Scroll</span>
+      <span>向下滾動</span>
     </div>
   </section>
 
-  <!-- Gallery -->
-  <section class="gallery-section" id="gallery">
+  <!-- 產品視頻 -->
+  <section class="gallery-section" id="product-video">
     <div class="section-header reveal">
-      <h2 class="section-title">Works</h2>
-      <span class="section-count" id="photoCount">— Loading</span>
+      <h2 class="section-title">產品視頻</h2>
+      <span class="section-count" id="videoCount">— Loading</span>
     </div>
-    <div class="masonry" id="masonryGrid">
-      <!-- Photos injected here -->
-    </div>
-    <div class="empty-state" id="emptyState" style="display:none;">
-      <h2>No images found</h2>
-      <p>Upload your images to the root directory of this repository.<br>Supported formats: JPG, JPEG, PNG, WEBP, GIF, AVIF</p>
-      <code>index.html &nbsp;/&nbsp; photo1.jpg &nbsp;/&nbsp; photo2.jpg &nbsp;/&nbsp; ...</code>
+    <div class="masonry video-grid" id="videoGrid">
+      <!-- 由 JS 注入 -->
     </div>
   </section>
 
-  <!-- About -->
-  <section id="about" style="padding: 80px 48px; border-top: 1px solid var(--border);">
-    <div class="reveal" style="max-width: 520px;">
-      <p style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;">About</p>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2rem;line-height:1.3;margin-bottom:20px;">
-        Capturing moments<br><em style="color:var(--accent)">between breaths</em>
-      </h2>
-      <p style="font-size:0.75rem;line-height:2;color:var(--muted);">
-        This portfolio is powered by a simple static HTML file. 
-        Place your images in the same directory and they will appear here automatically.
-      </p>
+  <!-- 產品圖片 -->
+  <section class="gallery-section" id="product-image">
+    <div class="section-header reveal">
+      <h2 class="section-title">產品圖片</h2>
+      <span class="section-count" id="productCount">— Loading</span>
+    </div>
+    <div class="masonry" id="productGrid">
+      <!-- 由 JS 注入 -->
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>Photography Portfolio</p>
-    <p id="footerYear"></p>
-  </footer>
+  <!-- 人像攝影 -->
+  <section class="gallery-section" id="portrait">
+    <div class="section-header reveal">
+      <h2 class="section-title">人像攝影</h2>
+      <span class="section-count" id="portraitCount">— Loading</span>
+    </div>
+    <div class="masonry" id="portraitGrid">
+      <!-- 由 JS 注入 -->
+    </div>
+  </section>
 
-  <!-- Lightbox -->
+  <!-- Lightbox（共用） -->
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lbClose">✕ Close</button>
-    <button class="lightbox-nav lightbox-prev" id="lbPrev">← Prev</button>
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">←</button>
     <div class="lightbox-img-wrap">
       <img id="lbImg" src="" alt="" />
+      <video id="lbVideo" src="" controls autoplay loop muted></video>
     </div>
     <p class="lightbox-caption" id="lbCaption"></p>
-    <button class="lightbox-nav lightbox-next" id="lbNext">Next →</button>
+    <button class="lightbox-nav lightbox-next" id="lbNext">→</button>
   </div>
 
-  <script>
-    // ─── Config: list your image files here ─────────────────────────────────
-    // Option A: List files manually (works on GitHub Pages without a server)
-    const IMAGES = [
-      // "photo1.jpg",
-      // "photo2.jpg",
-      // "landscape.png",
-    ];
-
-    // Option B: Auto-detect via GitHub API (works if hosted on GitHub Pages)
-    // Set your GitHub username and repo name below to enable auto-detection.
-    const GITHUB_USER = "Auster2";   // e.g. "johndoe"
-    const GITHUB_REPO = "Auster2.github.io";   // e.g. "my-portfolio"
-    const IMAGE_EXTS = /\.(jpe?g|png|webp|gif|avif|bmp|tiff?)$/i;
-    // ────────────────────────────────────────────────────────────────────────
-
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursorRing');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
-      cursorRing.style.left = e.clientX + 'px';
-      cursorRing.style.top  = e.clientY + 'px';
-    });
-    document.addEventListener('mouseover', e => {
-      if (e.target.matches('a,button,.photo-item')) document.body.classList.add('hovering');
-    });
-    document.addEventListener('mouseout', e => {
-      if (e.target.matches('a,button,.photo-item')) document.body.classList.remove('hovering');
-    });
-
-    // Footer year
-    document.getElementById('footerYear').textContent = new Date().getFullYear();
-
-    // Scroll reveal
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // ── Gallery rendering ──────────────────────────────────────────────────
-    const grid = document.getElementById('masonryGrid');
-    const emptyState = document.getElementById('emptyState');
-    const photoCount = document.getElementById('photoCount');
-    let photos = [];
-    let currentIndex = 0;
-
-    function getFilename(path) {
-      return path.split('/').pop().replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-    }
-
-    function renderGallery(list) {
-      photos = list;
-      if (list.length === 0) {
-        emptyState.style.display = 'block';
-        photoCount.textContent = '— 0 photos';
-        return;
-      }
-      photoCount.textContent = `— ${list.length} photo${list.length > 1 ? 's' : ''}`;
-      grid.innerHTML = '';
-      list.forEach((src, i) => {
-        const item = document.createElement('div');
-        item.className = 'photo-item reveal';
-        item.innerHTML = `
-          <img src="${src}" alt="${getFilename(src)}" loading="lazy" />
-          <div class="photo-overlay">
-            <span class="photo-name">${getFilename(src)}</span>
-          </div>`;
-        item.addEventListener('click', () => openLightbox(i));
-        grid.appendChild(item);
-        observer.observe(item);
-      });
-    }
-
-    // ── Lightbox ───────────────────────────────────────────────────────────
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lbImg');
-    const lbCaption = document.getElementById('lbCaption');
-
-    function openLightbox(i) {
-      currentIndex = i;
-      lbImg.src = photos[i];
-      lbImg.alt = getFilename(photos[i]);
-      lbCaption.textContent = getFilename(photos[i]);
-      lb.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-      lb.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    function navigate(dir) {
-      currentIndex = (currentIndex + dir + photos.length) % photos.length;
-      lbImg.src = photos[currentIndex];
-      lbCaption.textContent = getFilename(photos[currentIndex]);
-    }
-
-    document.getElementById('lbClose').addEventListener('click', closeLightbox);
-    document.getElementById('lbPrev').addEventListener('click', () => navigate(-1));
-    document.getElementById('lbNext').addEventListener('click', () => navigate(1));
-    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', e => {
-      if (!lb.classList.contains('active')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') navigate(-1);
-      if (e.key === 'ArrowRight') navigate(1);
-    });
-
-    // ── Load images ────────────────────────────────────────────────────────
-    async function loadFromGitHub() {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`);
-        if (!res.ok) return false;
-        const files = await res.json();
-        const imgs = files.filter(f => IMAGE_EXTS.test(f.name)).map(f => f.name);
-        if (imgs.length > 0) { renderGallery(imgs); return true; }
-      } catch(e) {}
-      return false;
-    }
-
-    async function init() {
-      // Priority 1: manually listed images
-      if (IMAGES.length > 0) { renderGallery(IMAGES); return; }
-
-      // Priority 2: GitHub API auto-detect
-      if (GITHUB_USER && GITHUB_REPO) {
-        const ok = await loadFromGitHub();
-        if (ok) return;
-      }
-
-      // Priority 3: show instructions
-      emptyState.style.display = 'block';
-      photoCount.textContent = '— 0 photos';
-    }
-
-    init();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
