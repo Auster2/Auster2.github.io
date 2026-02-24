@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>張旭作品集</title>
+  <title>张旭作品集</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet" />
@@ -16,72 +16,84 @@
 
   <!-- Header -->
   <header>
-    <a href="#" class="logo">ZHANG XU</a>
+    <a href="#" class="logo">张旭</a>
     <nav>
-      <a href="#product-video">產品視頻</a>
-      <a href="#product-image">產品圖片</a>
-      <a href="#portrait">人像攝影</a>
+      <a href="#product-video">产品视频</a>
+      <a href="#product-image">产品图片</a>
+      <a href="#portrait">人像摄影</a>
     </nav>
   </header>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero" id="home">
     <div class="hero-bg"></div>
     <div class="hero-line"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">影像創作</p>
-      <h1 class="hero-title">張旭<br><em>作品集</em></h1>
-      <p class="hero-sub">Product · Portrait · Video</p>
+      <p class="hero-eyebrow">影像故事</p>
+      <h1 class="hero-title">光影<br><em>之间</em></h1>
+      <p class="hero-sub">张旭作品集</p>
     </div>
     <div class="scroll-hint">
       <div class="scroll-line"></div>
-      <span>向下滾動</span>
+      <span>向下滚动</span>
     </div>
   </section>
 
-  <!-- 產品視頻 -->
+  <!-- 产品视频 -->
   <section class="gallery-section" id="product-video">
     <div class="section-header reveal">
-      <h2 class="section-title">產品視頻</h2>
-      <span class="section-count" id="videoCount">— Loading</span>
+      <h2 class="section-title">产品视频</h2>
+      <span class="section-count" id="videoCount">— 加载中</span>
     </div>
-    <div class="masonry video-grid" id="videoGrid">
+    <div class="masonry video-masonry" id="videoGrid">
       <!-- 由 JS 注入 -->
+    </div>
+    <div class="empty-state" id="videoEmpty" style="display:none;">
+      <h2>暂无视频</h2>
+      <p>请将视频文件上传至 videos/ 文件夹</p>
     </div>
   </section>
 
-  <!-- 產品圖片 -->
+  <!-- 产品图片 -->
   <section class="gallery-section" id="product-image">
     <div class="section-header reveal">
-      <h2 class="section-title">產品圖片</h2>
-      <span class="section-count" id="productCount">— Loading</span>
+      <h2 class="section-title">产品图片</h2>
+      <span class="section-count" id="productCount">— 加载中</span>
     </div>
     <div class="masonry" id="productGrid">
       <!-- 由 JS 注入 -->
     </div>
+    <div class="empty-state" id="productEmpty" style="display:none;">
+      <h2>暂无图片</h2>
+      <p>请将图片上传至 images/product/ 文件夹</p>
+    </div>
   </section>
 
-  <!-- 人像攝影 -->
+  <!-- 人像摄影 -->
   <section class="gallery-section" id="portrait">
     <div class="section-header reveal">
-      <h2 class="section-title">人像攝影</h2>
-      <span class="section-count" id="portraitCount">— Loading</span>
+      <h2 class="section-title">人像摄影</h2>
+      <span class="section-count" id="portraitCount">— 加载中</span>
     </div>
     <div class="masonry" id="portraitGrid">
       <!-- 由 JS 注入 -->
     </div>
+    <div class="empty-state" id="portraitEmpty" style="display:none;">
+      <h2>暂无人像作品</h2>
+      <p>请将图片上传至 images/portrait/ 文件夹</p>
+    </div>
   </section>
 
-  <!-- Lightbox（共用） -->
+  <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lbClose">✕</button>
-    <button class="lightbox-nav lightbox-prev" id="lbPrev">←</button>
+    <button class="lightbox-close" id="lbClose">✕ 关闭</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">← 上一个</button>
     <div class="lightbox-img-wrap">
       <img id="lbImg" src="" alt="" />
       <video id="lbVideo" src="" controls autoplay loop muted></video>
     </div>
     <p class="lightbox-caption" id="lbCaption"></p>
-    <button class="lightbox-nav lightbox-next" id="lbNext">→</button>
+    <button class="lightbox-nav lightbox-next" id="lbNext">下一个 →</button>
   </div>
 
   <script src="script.js"></script>
